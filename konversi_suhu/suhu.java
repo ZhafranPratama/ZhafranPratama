@@ -1,4 +1,3 @@
-package konversi_suhu;
 import java.util.Scanner;
 
 public class suhu {
