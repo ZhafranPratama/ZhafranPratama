@@ -3,6 +3,7 @@ import java.util.Scanner;
 public class calculator {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        String ops = " " ;
         System.out.println("Selamat datang di Kalkulator Sederhana!");
         System.out.println("Operasi yang dapat dilakukan:");
         System.out.println("1. Penjumlahan");
@@ -28,15 +29,19 @@ public class calculator {
             double result = 0;
             switch (choice) {
                 case 1:
+                    ops = "+";
                     result = num1 + num2;
                     break;
                 case 2:
+                    ops = "-";
                     result = num1 - num2;
                     break;
                 case 3:
+                    ops = "x";
                     result = num1 * num2;
                     break;
                 case 4:
+                    ops = "/";
                     if (num2 != 0) {
                         result = num1 / num2;
                     } else {
@@ -46,7 +51,7 @@ public class calculator {
                     break;
             }
 
-            System.out.println("Hasil: " + result);
+            System.out.println("Hasil: " + num1 + ops + num2 + " = " + result);
 
             System.out.print("Apakah Anda ingin melakukan operasi lain? (y/n): ");
             String another = scanner.next();
