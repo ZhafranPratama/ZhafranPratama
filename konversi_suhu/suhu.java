@@ -11,6 +11,8 @@ public class suhu {
         System.out.println(celsiusToFahrenheit(celcius));
         System.out.print("Suhu dalam Kelvin: ");
         System.out.println(celsiusToKelvin(celcius));
+
+        scanner.close();
     }
 
     public static double celsiusToFahrenheit(double celsius) {
@@ -20,4 +22,5 @@ public class suhu {
     public static double celsiusToKelvin(double celsius) {
         return celsius + 273.15;
     }
+
 }
