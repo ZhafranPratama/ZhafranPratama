@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -6,6 +7,17 @@ public class managemenKontak {
         Scanner scanner = new Scanner(System.in);
         ArrayList<Kontak> daftarKontak = new ArrayList<>();
 
+        // Memuat daftar kontak dari file jika file sudah ada
+        try {
+            FileInputStream fileInput = new FileInputStream("kontak.ser");
+            ObjectInputStream objectInput = new ObjectInputStream(fileInput);
+            daftarKontak = (ArrayList<Kontak>) objectInput.readObject();
+            objectInput.close();
+            fileInput.close();
+        } catch (IOException | ClassNotFoundException e) {
+            // File belum ada atau ada masalah saat membaca, abaikan
+        }
+
         int pilihan;
         do {
             System.out.println("Menu Aplikasi Manajemen Kontak:");
@@ -13,7 +25,7 @@ public class managemenKontak {
             System.out.println("2. Hapus Kontak berdasarkan Nama");
             System.out.println("3. Hapus Kontak berdasarkan Nomor Telepon");
             System.out.println("4. Tampilkan Daftar Kontak");
-            System.out.println("5. Keluar");
+            System.out.println("5. Simpan dan Keluar");
             System.out.print("Pilih menu: ");
             pilihan = scanner.nextInt();
             scanner.nextLine(); // Membuang newline
@@ -33,13 +45,8 @@ public class managemenKontak {
                 case 2:
                     System.out.print("Masukkan Nama Kontak yang akan dihapus: ");
                     String namaHapus = scanner.nextLine();
-                    for (Kontak kontak : daftarKontak) {
-                        if (kontak.getNama().equalsIgnoreCase(namaHapus)) {
-                            daftarKontak.remove(kontak);
-                            System.out.println("Kontak berhasil dihapus!");
-                            break;
-                        }
-                    }
+                    daftarKontak.removeIf(kontak -> kontak.getNama().equalsIgnoreCase(namaHapus));
+                    System.out.println("Kontak berhasil dihapus!");
                     break;
                 case 3:
                     System.out.print("Masukkan Nomor Telepon Kontak yang akan dihapus: ");
@@ -55,6 +62,17 @@ public class managemenKontak {
                     }
                     break;
                 case 5:
+                    // Simpan daftar kontak ke dalam file sebelum keluar
+                    try {
+                        FileOutputStream fileOutput = new FileOutputStream("kontak.ser");
+                        ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
+                        objectOutput.writeObject(daftarKontak);
+                        objectOutput.close();
+                        fileOutput.close();
+                        System.out.println("Daftar kontak berhasil disimpan!");
+                    } catch (IOException e) {
+                        System.out.println("Terjadi kesalahan saat menyimpan kontak.");
+                    }
                     System.out.println("Terima kasih!");
                     break;
                 default:
@@ -66,7 +84,7 @@ public class managemenKontak {
     }
 }
 
-class Kontak {
+class Kontak implements Serializable {
     private String nama;
     private String nomorTelepon;
     private String email;
@@ -108,4 +126,3 @@ class Kontak {
         return "Nama: " + nama + "\nNomor Telepon: " + nomorTelepon + "\nEmail: " + email;
     }
 }
-
